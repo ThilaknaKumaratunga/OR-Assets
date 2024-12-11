@@ -12,7 +12,7 @@ This proof of concept involves solving an inventory and distribution optimizatio
   - `Outlet Details`: Provides information about outlets and their locations.
   - `Sales Data`: Historical sales data, used to forecast demand.
   - `Vehicle Details`: Specifies available vehicles and their capacities.
-  - `Inventory Details`: Describes stock availability.
+  - `Inventory Details`: Per unit inventory cost.
 - Data is read using `pandas` and cleaned/preprocessed to ensure consistency.
 
 ### 2. Demand Forecasting
@@ -46,23 +46,21 @@ This enhancement would allow the solution to effectively establish a distributio
 - Defined decision variables for allocating inventory to outlets (`q[i, j]`) and routing vehicles (`y[j]`).
 - Modeled constraints:
   - **Vehicle Capacity Constraint**: For each outlet, the total quantity distributed (`q`) must not exceed the combined capacity of the vehicles serving that outlet.
-  - **Quantity Satisfaction Constraint**: Ensures that the quantity of each product delivered to a store does not exceed the vehicle capacity assigned to that store.
+  
   - **Demand Satisfaction Constraint**: Ensures that the quantity delivered for each product at a store does not exceed the store’s demand for that product.
 - Objective Function:
-  - **Revenue**: Based on the allocated quantity (`q[i, j]`) multiplied by unit price (`Pr[j]`).
-  - **Delivery Costs**: Includes the cost of activating vehicles for delivery (`C[j] * y[j]`).
+  - **Revenue**: Based on the allocated quantity (`q[i, j]`) multiplied by  priority (`Pr[j]`) and Adjusted price (`A[i]`).
+  - **Delivery Costs**: Accounts for transportation cost (`C[j] * y[j]`).
   - **Inventory Costs**: Accounts for inventory holding costs (`IC[i] * q[i, j]`).
   - **Optimization Goal**: Maximize the net profit (`Z`), calculated as `Revenue - Delivery Costs - Inventory Costs`.
 
 ### 7. Traveling Salesman Problem (TSP)
-
+- Calculated for outlets of a specific beat.
 - For routing optimization, formulated a TSP variant:
   - Minimize the total travel distance for vehicle routes.
   - Ensured valid routes with no sub-tours and coverage of all outlets.
 
 ### 8. Solver: CPLEX Enterprise Edition
-
-- Used IBM CPLEX for solving the linear programming model and TSP due to its ability to handle large-scale constraints effectively.
 - Note: The CPLEX Community Edition imposes a limit on the number of constraints, necessitating the use of the Enterprise Edition.
 
 ## Dependencies
@@ -85,6 +83,8 @@ nbformat>=4.2.0
 1. Install the dependencies:
    ```
    pip install -r requirements.txt
+   # install enterprise edition python client
+   python /Applications/CPLEX_Studio2211/python/setup.py install
    ```
 2. Ensure IBM CPLEX is installed and configured on your system.
 3. Open the Jupyter Notebook and execute the cells in order.
@@ -92,9 +92,8 @@ nbformat>=4.2.0
 ## Outputs
 
 - The optimized solution includes:
-  - Allocation of inventory to outlets.
-  - Vehicle routes and schedules.
-  - Demand fulfillment metrics.
+  - Allocation of inventory to outlets
+  - Vehicle routes
 
 ## Key Notes
 
