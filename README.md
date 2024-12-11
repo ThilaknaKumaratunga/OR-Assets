@@ -12,7 +12,7 @@ This proof of concept involves solving an inventory and distribution optimizatio
   - `Outlet Details`: Provides information about outlets and their locations.
   - `Sales Data`: Historical sales data, used to forecast demand.
   - `Vehicle Details`: Specifies available vehicles and their capacities.
-  - `Inventory Details`: Describes stock availability.
+  - `Inventory Details`: Per unit cost for the products.
 - Data is read using `pandas` and cleaned/preprocessed to ensure consistency.
 
 ### 2. Demand Forecasting
@@ -46,7 +46,6 @@ This enhancement would allow the solution to effectively establish a distributio
 - Defined decision variables for allocating inventory to outlets (`q[i, j]`) and routing vehicles (`y[j]`).
 - Modeled constraints:
   - **Vehicle Capacity Constraint**: For each outlet, the total quantity distributed (`q`) must not exceed the combined capacity of the vehicles serving that outlet.
-  - **Quantity Satisfaction Constraint**: Ensures that the quantity of each product delivered to a store does not exceed the vehicle capacity assigned to that store.
   - **Demand Satisfaction Constraint**: Ensures that the quantity delivered for each product at a store does not exceed the store’s demand for that product.
 - Objective Function:
   - **Revenue**: Based on the allocated quantity (`q[i, j]`) multiplied by unit price (`Pr[j]`).
