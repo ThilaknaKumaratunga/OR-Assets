@@ -1,0 +1,102 @@
+# OR Solution: README
+
+## Overview
+
+This proof of concept involves solving an inventory and distribution optimization problem using linear programming and routing techniques. The problem combines aspects of demand forecasting, inventory management, and distribution logistics, including a focus on the Traveling Salesman Problem (TSP) for efficient routing.
+
+## Procedure
+
+### 1. Data Loading and Preprocessing
+
+- Input data includes:
+  - `Outlet Details`: Provides information about outlets and their locations.
+  - `Sales Data`: Historical sales data, used to forecast demand.
+  - `Vehicle Details`: Specifies available vehicles and their capacities.
+  - `Inventory Details`: Describes stock availability.
+- Data is read using `pandas` and cleaned/preprocessed to ensure consistency.
+
+### 2. Demand Forecasting
+
+- Grouped historical sales data by outlet and product to calculate maximum demand.
+- By using the maximum demand for each outlet and product, the approach minimizes the risk of under-distributing inventory, ensuring that demand is met even under peak conditions.
+
+### 3. Distance Calculation
+
+- Used the Haversine formula to calculate straight-line distances between locations.
+- In an optimal solution, actual route distances should be used for more accurate results.
+- As a future enhancement, a routing API such as Google Maps Distance Matrix API can be integrated to obtain real-world distances.
+
+### 4. Priority Measures
+
+- Each outlet is assigned a priority measure. In this proof of concept, the priority measure is calculated using a randomly assigned value.
+
+- Other possible ways to assign priority could include:
+    - Demand Volume: Outlets with higher demand for certain products might be prioritized for supply or delivery to ensure that high-demand outlets receive their required stock promptly
+
+    - Revenue Potential: Outlets with higher revenue potential could be given higher priority.
+
+    - Distance from Distribution Centre: Outlets closer to the distribution centre may have a different priority to optimize logistics.
+
+### 4. Distribution Center Assumption
+In this Proof of Concept (POC), the location used as the distribution center is not an actual facility but a selected point near a potential distribution area.
+For a real-world implementation, determining the exact position of a distribution center is crucial. A gravitational model approach can be applied to calculate an optimal location based on factors such as demand distribution and transportation costs.
+This enhancement would allow the solution to effectively establish a distribution center that minimizes costs and improves overall efficiency.
+### 4. Linear Programming Approach
+
+- Defined decision variables for allocating inventory to outlets (`q[i, j]`) and routing vehicles (`y[j]`).
+- Modeled constraints:
+  - **Vehicle Capacity Constraint**: For each outlet, the total quantity distributed (`q`) must not exceed the combined capacity of the vehicles serving that outlet.
+  - **Quantity Satisfaction Constraint**: Ensures that the quantity of each product delivered to a store does not exceed the vehicle capacity assigned to that store.
+  - **Demand Satisfaction Constraint**: Ensures that the quantity delivered for each product at a store does not exceed the store’s demand for that product.
+- Objective Function:
+  - **Revenue**: Based on the allocated quantity (`q[i, j]`) multiplied by unit price (`Pr[j]`).
+  - **Delivery Costs**: Includes the cost of activating vehicles for delivery (`C[j] * y[j]`).
+  - **Inventory Costs**: Accounts for inventory holding costs (`IC[i] * q[i, j]`).
+  - **Optimization Goal**: Maximize the net profit (`Z`), calculated as `Revenue - Delivery Costs - Inventory Costs`.
+
+### 5. Traveling Salesman Problem (TSP)
+
+- For routing optimization, formulated a TSP variant:
+  - Minimize the total travel distance for vehicle routes.
+  - Ensured valid routes with no sub-tours and coverage of all outlets.
+
+### 6. Solver: CPLEX Enterprise Edition
+
+- Used IBM CPLEX for solving the linear programming model and TSP due to its ability to handle large-scale constraints effectively.
+- Note: The CPLEX Community Edition imposes a limit on the number of constraints, necessitating the use of the Enterprise Edition.
+
+## Dependencies
+
+The following dependencies are required to run this project:
+
+```
+pandas
+numpy
+openpyxl
+docplex
+folium
+plotly
+dash
+nbformat>=4.2.0
+```
+
+## How to Run
+
+1. Install the dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+2. Ensure IBM CPLEX is installed and configured on your system.
+3. Open the Jupyter Notebook and execute the cells in order.
+
+## Outputs
+
+- The optimized solution includes:
+  - Allocation of inventory to outlets.
+  - Vehicle routes and schedules.
+  - Demand fulfillment metrics.
+
+## Key Notes
+
+- The project relies on linear programming and routing techniques to address real-world constraints.
+- Due to the complexity of the problem, the use of the CPLEX Enterprise Edition is essential for solving large-scale models without constraint limitations.
