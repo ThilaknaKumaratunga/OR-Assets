@@ -37,11 +37,11 @@ This proof of concept involves solving an inventory and distribution optimizatio
 
     - Distance from Distribution Centre: Outlets closer to the distribution centre may have a different priority to optimize logistics.
 
-### 4. Distribution Center Assumption
+### 5. Distribution Center Assumption
 In this Proof of Concept (POC), the location used as the distribution center is not an actual facility but a selected point near a potential distribution area.
 For a real-world implementation, determining the exact position of a distribution center is crucial. A gravitational model approach can be applied to calculate an optimal location based on factors such as demand distribution and transportation costs.
 This enhancement would allow the solution to effectively establish a distribution center that minimizes costs and improves overall efficiency.
-### 4. Linear Programming Approach
+### 6. Linear Programming Approach
 
 - Defined decision variables for allocating inventory to outlets (`q[i, j]`) and routing vehicles (`y[j]`).
 - Modeled constraints:
@@ -54,13 +54,13 @@ This enhancement would allow the solution to effectively establish a distributio
   - **Inventory Costs**: Accounts for inventory holding costs (`IC[i] * q[i, j]`).
   - **Optimization Goal**: Maximize the net profit (`Z`), calculated as `Revenue - Delivery Costs - Inventory Costs`.
 
-### 5. Traveling Salesman Problem (TSP)
+### 7. Traveling Salesman Problem (TSP)
 
 - For routing optimization, formulated a TSP variant:
   - Minimize the total travel distance for vehicle routes.
   - Ensured valid routes with no sub-tours and coverage of all outlets.
 
-### 6. Solver: CPLEX Enterprise Edition
+### 8. Solver: CPLEX Enterprise Edition
 
 - Used IBM CPLEX for solving the linear programming model and TSP due to its ability to handle large-scale constraints effectively.
 - Note: The CPLEX Community Edition imposes a limit on the number of constraints, necessitating the use of the Enterprise Edition.
